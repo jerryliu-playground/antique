@@ -1,0 +1,16 @@
+# 依赖与构建产物
+node_modules/
+dist/
+coverage/
+
+# 运行数据(房间快照、战绩)
+data/
+
+# 密钥与本地配置 —— 绝不入库
+.env
+*.local
+
+# 杂项
+*.log
+nohup.out
+.DS_Store

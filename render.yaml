@@ -1,0 +1,22 @@
+# Render 免费层部署(https://render.com/docs/blueprint-spec)
+# 免费层特性:15 分钟无访问会休眠(下次访问约 1 分钟冷启动)、无持久磁盘(快照/战绩不跨重启)。
+services:
+  - type: web
+    name: antique
+    runtime: node
+    plan: free
+    region: singapore # 离国内玩家最近的区域
+    # 构建需要 devDependencies(vite 等),显式关掉 NODE_ENV=production 触发的 --prod 安装
+    buildCommand: corepack enable && pnpm install --prod=false && pnpm --filter @antique/web build
+    startCommand: pnpm --filter @antique/server start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: '24'
+      # LiveKit 语音凭据:在 Render 面板里手动填(不入库)
+      - key: LIVEKIT_URL
+        sync: false
+      - key: LIVEKIT_API_KEY
+        sync: false
+      - key: LIVEKIT_API_SECRET
+        sync: false

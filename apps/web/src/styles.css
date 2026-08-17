@@ -1,0 +1,105 @@
+@import 'tailwindcss';
+
+/* 民国 / 古玩题材:深色底 + 暖褐金,衬线中文(SPEC 7.2,不要蓝白 SaaS 风) */
+@theme {
+  --font-song: 'Noto Serif SC', 'Songti SC', 'STSong', 'SimSun', serif;
+
+  --color-ink-950: #14100d;
+  --color-ink-900: #1c1511;
+  --color-ink-800: #261c15;
+  --color-ink-700: #33261c;
+  --color-ink-600: #453425;
+
+  --color-gold-700: #8a6d1d;
+  --color-gold-500: #c9a227;
+  --color-gold-300: #e3c565;
+
+  --color-paper-100: #ede3cf;
+  --color-paper-300: #d8c8a8;
+  --color-muted-400: #a08d72;
+
+  --color-seal-600: #a43a2e; /* 印章红:赝品 / 危险 */
+  --color-jade-500: #3f8e6b; /* 玉绿:真品 */
+}
+
+html,
+body {
+  background: var(--color-ink-950);
+  color: var(--color-paper-100);
+  font-family: var(--font-song);
+  -webkit-font-smoothing: antialiased;
+}
+
+@layer components {
+  .btn,
+  .btn-gold,
+  .btn-ghost,
+  .btn-seal {
+    @apply inline-flex items-center justify-center rounded-md px-4 py-2.5 text-base font-semibold
+      transition select-none active:scale-95 disabled:pointer-events-none disabled:opacity-40;
+  }
+  .btn-gold {
+    @apply bg-gold-500 text-ink-950 shadow-[0_2px_0_var(--color-gold-700)];
+  }
+  .btn-ghost {
+    @apply border border-ink-600 bg-ink-800 text-paper-300;
+  }
+  .btn-seal {
+    @apply bg-seal-600 text-paper-100;
+  }
+  .panel {
+    @apply rounded-lg border border-ink-600 bg-ink-800/80 p-3;
+  }
+  .field {
+    @apply w-full rounded-md border border-ink-600 bg-ink-900 px-3 py-2.5 text-paper-100
+      outline-none placeholder:text-muted-400 focus:border-gold-500;
+  }
+  /* 真 / 赝 / 封 印章角标 */
+  .stamp,
+  .stamp-real,
+  .stamp-fake,
+  .stamp-blocked {
+    @apply inline-flex h-8 w-8 items-center justify-center rounded-sm border-2 text-lg font-black;
+  }
+  .stamp-real {
+    @apply border-jade-500 text-jade-500;
+  }
+  .stamp-fake {
+    @apply rotate-6 border-seal-600 text-seal-600;
+  }
+  .stamp-blocked {
+    @apply border-muted-400 text-muted-400;
+  }
+}
+
+/* 开票逐票展开:计数条生长动画 */
+@keyframes tally-grow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+.tally-bar {
+  transform-origin: left;
+  animation: tally-grow 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* 印章盖下 */
+@keyframes stamp-in {
+  0% {
+    transform: scale(2.4) rotate(-14deg);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(0.92) rotate(4deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(6deg);
+  }
+}
+.stamp-in {
+  animation: stamp-in 0.5s ease-out both;
+}
